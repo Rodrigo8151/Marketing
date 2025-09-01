@@ -1,0 +1,259 @@
+/* --- Estilos Base y Variables --- */
+:root {
+    --primary-color: #E6397A; /* El rosa de tu diseño */
+    --text-light: #ffffff;
+    --text-dark: #333333;
+    /* CAMBIO CLAVE: El color de fondo claro de tu página */
+    --background-light: #f0f2f5; 
+    --nav-height-initial: 90px;
+    --nav-height-scrolled: 70px;
+}
+
+.navbar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    height: var(--nav-height-initial);
+    z-index: 1000;
+    
+    /* 
+      CAMBIO CLAVE 1:
+      Iniciamos con el fondo oscuro y el efecto "glass" desde el principio.
+      Esto asegura legibilidad sobre tu fondo dividido.
+      Eliminamos la transición de color de fondo, ya que ahora es el estado base.
+    */
+    background-color: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+
+    /* Mantenemos la transición solo para la altura */
+    transition: height 0.4s ease;
+}
+
+/* 
+  CAMBIO CLAVE 2:
+  La clase .scrolled ahora SOLO se encarga de cambiar la altura.
+  El fondo y la sombra ya están definidos en el estado inicial.
+*/
+.navbar-container.scrolled {
+    height: var(--nav-height-scrolled);
+}
+
+.navbar-logo a {
+    color: var(--primary-color);
+    font-size: 1.7rem;
+    font-weight: 800;
+    text-decoration: none;
+    letter-spacing: 1px;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.navbar-logo a:hover {
+    transform: scale(1.05);
+}
+
+.navbar-navigation {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.navbar-links {
+    display: flex;
+    list-style: none;
+    align-items: center;
+    gap: 40px;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    position: relative;
+    padding-bottom: 8px;
+    transition: color 0.3s ease-in-out;
+}
+
+.navbar-links a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    transform: scaleX(0);
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--primary-color);
+    transform-origin: bottom right;
+    transition: transform 0.3s ease-out;
+}
+
+.navbar-links a:hover {
+    color: var(--text-light);
+}
+
+.navbar-links a:hover::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+
+/* --- Call to Action (CTA) Button --- */
+.navbar-links .cta-button a {
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    padding: 10px 22px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar-links .cta-button a:hover {
+    background-color: #d12c6a;
+    transform: translateY(-2px);
+    color: var(--text-light);
+}
+
+.navbar-links .cta-button a::after {
+    display: none;
+}
+
+
+/* --- Iconos de acción --- */
+.navbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.action-icon {
+    color: var(--text-light);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+    position: relative;
+}
+
+.action-icon:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+/* --- Menú Hamburguesa --- */
+.hamburger-menu {
+    display: none;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 5px;
+    z-index: 1001;
+    padding: 0;
+}
+
+.hamburger-menu span {
+    display: block;
+    width: 28px;
+    height: 3px;
+    background-color: var(--text-light);
+    border-radius: 3px;
+    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease, background-color 0.3s ease;
+}
+
+.hamburger-menu.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+.hamburger-menu.active span:nth-child(2) { opacity: 0; }
+.hamburger-menu.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+
+/* --- Tema Claro (Light Theme) --- */
+/*
+  CAMBIO CLAVE 3:
+  Ahora, cuando se active el tema claro, el fondo coincidirá con el
+  de tu página, haciendo la transición mucho más suave.
+  También hacemos la sombra un poco más sutil para el fondo claro.
+*/
+.navbar-container.light-theme {
+    background-color: rgba(240, 242, 245, 0.9); /* Usamos la variable --background-light con alpha */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
+    transition: background-color 0.4s ease, height 0.4s ease; /* Reactivamos la transición de color aquí */
+}
+
+.navbar-container.light-theme .navbar-links a:not(.cta-button a) {
+    color: var(--text-dark);
+}
+.navbar-container.light-theme .navbar-links a:hover:not(.cta-button a) {
+    color: var(--text-dark);
+}
+.navbar-container.light-theme .action-icon {
+    color: var(--text-dark);
+}
+.navbar-container.light-theme .hamburger-menu span {
+    background-color: var(--text-dark);
+}
+.navbar-container.light-theme .hamburger-menu.active span {
+    background-color: var(--primary-color);
+}
+
+
+/* --- RESPONSIVIDAD (Media Query) --- */
+@media (max-width: 992px) {
+    /* (Sin cambios en esta sección, sigue siendo correcta) */
+    .navbar-navigation {
+        display: none;
+    }
+    
+    .hamburger-menu {
+        display: flex;
+    }
+
+    .navbar-actions .action-icon {
+        display: none;
+    }
+
+    .navbar-links {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: rgba(10, 10, 10, 0.98);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 40px;
+
+        opacity: 0;
+        transform: translateY(-100%);
+        pointer-events: none;
+        transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.5s ease;
+    }
+  
+    .navbar-links.active {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    .navbar-links a {
+        font-size: 1.8rem;
+    }
+    
+    .navbar-links .cta-button a {
+      font-size: 1.5rem;
+    }
+    
+    .navbar-container.light-theme .navbar-links {
+        background-color: rgba(245, 245, 245, 0.98);
+    }
+}

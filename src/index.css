@@ -1,0 +1,28 @@
+/* src/index.css (VERSIÓN MONOCROMÁTICA CORRECTA) */
+
+:root {
+  --bg-light: #FFFFFF;
+  --bg-dark: #111111;         /* Un negro intenso para el panel */
+  --text-dark: #1D1D1F;       /* Un negro profesional para texto */
+  --text-muted: #86868B;      /* Gris suave para texto secundario */
+  --card-bg: #F5F5F7;        /* Gris muy claro para fondos de tarjetas */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
