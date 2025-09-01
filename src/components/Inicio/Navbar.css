@@ -1,259 +1,103 @@
 /* --- Estilos Base y Variables --- */
 :root {
-    --primary-color: #E6397A; /* El rosa de tu diseño */
+    --primary-color: #E6397A;
     --text-light: #ffffff;
     --text-dark: #333333;
-    /* CAMBIO CLAVE: El color de fondo claro de tu página */
-    --background-light: #f0f2f5; 
     --nav-height-initial: 90px;
     --nav-height-scrolled: 70px;
 }
 
+/* --- Contenedor Principal --- */
 .navbar-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 5%;
-    height: var(--nav-height-initial);
-    z-index: 1000;
-    
-    /* 
-      CAMBIO CLAVE 1:
-      Iniciamos con el fondo oscuro y el efecto "glass" desde el principio.
-      Esto asegura legibilidad sobre tu fondo dividido.
-      Eliminamos la transición de color de fondo, ya que ahora es el estado base.
-    */
-    background-color: rgba(15, 15, 15, 0.85);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-
-    /* Mantenemos la transición solo para la altura */
+    position: fixed; top: 0; left: 0; width: 100%;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 5%; height: var(--nav-height-initial);
+    z-index: 1000; background-color: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     transition: height 0.4s ease;
 }
-
-/* 
-  CAMBIO CLAVE 2:
-  La clase .scrolled ahora SOLO se encarga de cambiar la altura.
-  El fondo y la sombra ya están definidos en el estado inicial.
-*/
-.navbar-container.scrolled {
-    height: var(--nav-height-scrolled);
-}
+.navbar-container.scrolled { height: var(--nav-height-scrolled); }
 
 .navbar-logo a {
-    color: var(--primary-color);
-    font-size: 1.7rem;
-    font-weight: 800;
-    text-decoration: none;
-    letter-spacing: 1px;
-    transition: transform 0.3s ease, color 0.3s ease;
+    color: var(--primary-color); font-size: 1.7rem;
+    font-weight: 800; text-decoration: none; letter-spacing: 1px;
 }
 
-.navbar-logo a:hover {
-    transform: scale(1.05);
-}
+/* --- LÓGICA DE VISIBILIDAD (AQUÍ ESTÁ LA CORRECCIÓN) --- */
 
+/* Por defecto (vista de escritorio > 992px) */
 .navbar-navigation {
-    display: flex;
+    display: flex; /* MUESTRA el menú de escritorio */
     flex-grow: 1;
     justify-content: center;
 }
-
 .navbar-links {
-    display: flex;
-    list-style: none;
-    align-items: center;
-    gap: 40px;
-    margin: 0;
-    padding: 0;
+    display: none; /* OCULTA el menú de móvil */
 }
-
-.navbar-links a {
-    color: var(--text-light);
-    text-decoration: none;
-    font-size: 1rem;
-    font-weight: 500;
-    position: relative;
-    padding-bottom: 8px;
-    transition: color 0.3s ease-in-out;
-}
-
-.navbar-links a::after {
-    content: '';
-    position: absolute;
-    width: 100%;
-    transform: scaleX(0);
-    height: 2px;
-    bottom: 0;
-    left: 0;
-    background-color: var(--primary-color);
-    transform-origin: bottom right;
-    transition: transform 0.3s ease-out;
-}
-
-.navbar-links a:hover {
-    color: var(--text-light);
-}
-
-.navbar-links a:hover::after {
-    transform: scaleX(1);
-    transform-origin: bottom left;
-}
-
-
-/* --- Call to Action (CTA) Button --- */
-.navbar-links .cta-button a {
-    background-color: var(--primary-color);
-    color: var(--text-light);
-    padding: 10px 22px;
-    border-radius: 50px;
-    font-weight: 600;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.navbar-links .cta-button a:hover {
-    background-color: #d12c6a;
-    transform: translateY(-2px);
-    color: var(--text-light);
-}
-
-.navbar-links .cta-button a::after {
-    display: none;
-}
-
-
-/* --- Iconos de acción --- */
-.navbar-actions {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.action-icon {
-    color: var(--text-light);
-    font-size: 1.5rem;
-    cursor: pointer;
-    transition: color 0.3s ease, transform 0.3s ease;
-    position: relative;
-}
-
-.action-icon:hover {
-    color: var(--primary-color);
-    transform: scale(1.1);
-}
-
-/* --- Menú Hamburguesa --- */
 .hamburger-menu {
-    display: none;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    flex-direction: column;
-    gap: 5px;
-    z-index: 1001;
-    padding: 0;
+    display: none; /* OCULTA el botón de hamburguesa */
 }
 
-.hamburger-menu span {
-    display: block;
-    width: 28px;
-    height: 3px;
-    background-color: var(--text-light);
-    border-radius: 3px;
-    transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.4s ease, background-color 0.3s ease;
+/* --- Estilos del Menú de Escritorio --- */
+.navbar-navigation ul {
+    display: flex; list-style: none; align-items: center;
+    gap: 40px; margin: 0; padding: 0;
+}
+.navbar-navigation a {
+    color: var(--text-light); text-decoration: none;
+    font-size: 1rem; font-weight: 500;
 }
 
-.hamburger-menu.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-.hamburger-menu.active span:nth-child(2) { opacity: 0; }
-.hamburger-menu.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+/* --- Botón CTA (Contacto) y Acciones --- */
+.cta-button a {
+    background-color: var(--primary-color); color: var(--text-light);
+    padding: 10px 22px; border-radius: 50px; font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+.cta-button a:hover { background-color: #d12c6a; }
+.navbar-actions { display: flex; align-items: center; gap: 20px; }
+.action-icon { color: var(--text-light); font-size: 1.5rem; cursor: pointer; }
 
 
-/* --- Tema Claro (Light Theme) --- */
-/*
-  CAMBIO CLAVE 3:
-  Ahora, cuando se active el tema claro, el fondo coincidirá con el
-  de tu página, haciendo la transición mucho más suave.
-  También hacemos la sombra un poco más sutil para el fondo claro.
-*/
-.navbar-container.light-theme {
-    background-color: rgba(240, 242, 245, 0.9); /* Usamos la variable --background-light con alpha */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.07);
-    transition: background-color 0.4s ease, height 0.4s ease; /* Reactivamos la transición de color aquí */
-}
-
-.navbar-container.light-theme .navbar-links a:not(.cta-button a) {
-    color: var(--text-dark);
-}
-.navbar-container.light-theme .navbar-links a:hover:not(.cta-button a) {
-    color: var(--text-dark);
-}
-.navbar-container.light-theme .action-icon {
-    color: var(--text-dark);
-}
-.navbar-container.light-theme .hamburger-menu span {
-    background-color: var(--text-dark);
-}
-.navbar-container.light-theme .hamburger-menu.active span {
-    background-color: var(--primary-color);
-}
-
-
-/* --- RESPONSIVIDAD (Media Query) --- */
+/* --- RESPONSIVIDAD (Media Query para Móvil <= 992px) --- */
 @media (max-width: 992px) {
-    /* (Sin cambios en esta sección, sigue siendo correcta) */
+    /* Invertimos la lógica de visibilidad */
     .navbar-navigation {
-        display: none;
+        display: none; /* OCULTA el menú de escritorio */
     }
-    
     .hamburger-menu {
-        display: flex;
+        display: flex; /* MUESTRA el botón de hamburguesa */
+        z-index: 1001; /* Nos aseguramos que esté por encima de todo */
     }
-
-    .navbar-actions .action-icon {
-        display: none;
-    }
-
+    
+    /* El menú de móvil (overlay) se vuelve un flexbox para que la animación funcione */
     .navbar-links {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100vh;
+        display: flex;
+        position: fixed; top: 0; left: 0;
+        width: 100%; height: 100vh;
         background-color: rgba(10, 10, 10, 0.98);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 40px;
-
-        opacity: 0;
-        transform: translateY(-100%);
+        flex-direction: column; justify-content: center; align-items: center;
+        gap: 40px; list-style: none; padding: 0; margin: 0;
+        opacity: 0; transform: translateY(-100%);
         pointer-events: none;
-        transition: transform 0.5s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.5s ease;
-    }
-  
-    .navbar-links.active {
-        opacity: 1;
-        transform: translateY(0);
-        pointer-events: auto;
+        transition: transform 0.5s ease, opacity 0.5s ease;
     }
 
-    .navbar-links a {
-        font-size: 1.8rem;
+    .navbar-links.active {
+        opacity: 1; transform: translateY(0); pointer-events: auto;
     }
-    
-    .navbar-links .cta-button a {
-      font-size: 1.5rem;
+    .navbar-links a { font-size: 1.8rem; color: var(--text-light); text-decoration: none; }
+
+    /* Estilos del botón de hamburguesa */
+    .hamburger-menu {
+        background: transparent; border: none; cursor: pointer;
+        flex-direction: column; gap: 5px; padding: 0; margin-left: 15px;
     }
-    
-    .navbar-container.light-theme .navbar-links {
-        background-color: rgba(245, 245, 245, 0.98);
+    .hamburger-menu span {
+        display: block; width: 28px; height: 3px; background-color: var(--text-light);
+        border-radius: 3px; transition: transform 0.4s ease, opacity 0.4s ease;
     }
+    .hamburger-menu.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger-menu.active span:nth-child(2) { opacity: 0; }
+    .hamburger-menu.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 }

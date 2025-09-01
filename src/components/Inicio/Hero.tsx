@@ -3,25 +3,24 @@
 import { useState, useEffect, useRef } from 'react';
 import './Hero.css';
 
-// La estructura de datos se mantiene
 const productsData = [
-  { id: 1, name: 'PROPHERE', subtitle: 'FUTURISTIC SNEAKERS', description: 'Agresivo, llamativo y nunca se disculpa. Prophere revela el futuro un paso a la vez.', variants: [ { id: 101, imageUrl: '/portfolio/p4.jpg' }, { id: 102, imageUrl: '/products/variant1.jpg' }, { id: 103, imageUrl: '/portfolio/p2.jpg' } ] },
+  { id: 1, name: 'PROPHERE', subtitle: 'FUTURISTIC SNEAKERS', description: 'Agresivo, llamativo y nunca se disculpa. Prophere revela el futuro un paso a la vez.', variants: [ { id: 101, imageUrl: '/portfolio/p1.jpg' }, { id: 102, imageUrl: '/products/variant1.jpg' }, { id: 103, imageUrl: '/portfolio/p2.jpg' } ] },
   { id: 2, name: 'ULTRABOOST', subtitle: 'ENERGY RUNNING', description: 'Siente la energía en cada zancada. El retorno de energía de Boost te mantiene en movimiento.', variants: [ { id: 201, imageUrl: '/portfolio/p4.jpg' }, { id: 202, imageUrl: '/products/variant2.jpg' } ] }
 ];
 
-const AUTOPLAY_DELAY = 5000; // 5 segundos
+const AUTOPLAY_DELAY = 5000;
 
 const Hero = () => {
   const [slideIndex, setSlideIndex] = useState(0);
   const [variantIndex, setVariantIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false); // <--- NUEVO ESTADO PARA ANIMACIÓN
   const intervalRef = useRef<number | null>(null);
 
-  // --- LÓGICA DE AUTOPLAY REINTRODUCIDA ---
   const startAutoplay = () => {
     if (intervalRef.current !== null) return;
     intervalRef.current = window.setInterval(() => {
       setSlideIndex(prev => (prev + 1) % productsData.length);
-      setVariantIndex(0); // Resetea la variante al cambiar de producto
+      setVariantIndex(0);
     }, AUTOPLAY_DELAY);
   };
 
@@ -34,26 +33,40 @@ const Hero = () => {
 
   useEffect(() => {
     startAutoplay();
-    return () => stopAutoplay(); // Limpieza al desmontar
+    return () => stopAutoplay();
   }, []);
 
+  const triggerAnimation = (callback: () => void) => {
+    setIsAnimating(true);
+    setTimeout(() => {
+      callback(); // Ejecuta el cambio de estado (slide o variante)
+      setIsAnimating(false);
+    }, 300); // Duración de la animación de fade-out
+  };
+
   const goToSlide = (index: number) => {
-    stopAutoplay(); // Detiene el autoplay si el usuario interactúa
-    setSlideIndex(index);
-    setVariantIndex(0);
+    stopAutoplay();
+    if (index === slideIndex) return; // No hacer nada si ya está en el slide
+    triggerAnimation(() => {
+      setSlideIndex(index);
+      setVariantIndex(0);
+    });
   };
 
   const handleVariantSelect = (vIndex: number) => {
-    stopAutoplay(); // Detiene el autoplay si el usuario interactúa
-    setVariantIndex(vIndex);
+    stopAutoplay();
+    if (vIndex === variantIndex) return; // No hacer nada si ya está en la variante
+    triggerAnimation(() => {
+      setVariantIndex(vIndex);
+    });
   };
 
   return (
     <section 
       id="home" 
       className="hero-container"
-      onMouseEnter={stopAutoplay} // Pausa al pasar el mouse
-      onMouseLeave={startAutoplay} // Reanuda al quitar el mouse
+      onMouseEnter={stopAutoplay}
+      onMouseLeave={startAutoplay}
     >
       <div className="slides-wrapper" style={{ transform: `translateX(-${slideIndex * 100}%)` }}>
         {productsData.map((product, pIndex) => (
@@ -78,7 +91,8 @@ const Hero = () => {
               <img 
                 src={product.variants[pIndex === slideIndex ? variantIndex : 0].imageUrl} 
                 alt={product.name} 
-                className="main-product-image"
+                // AÑADIMOS LA CLASE DE ANIMACIÓN
+                className={`main-product-image ${isAnimating ? 'animating' : ''}`}
               />
             </div>
             

@@ -22,13 +22,22 @@ const About = () => {
   const goToPrev = () => {
     setActiveIndex((prevIndex) => (prevIndex - 1 + products.length) % products.length);
   };
+  
+  // === LA LÓGICA CLAVE QUE FALTABA ===
+  // Calculamos el desplazamiento necesario para centrar el slide activo.
+  // En escritorio: 360px de ancho + 40px de margen = 400px por slide.
+  // El cálculo centra el carrusel en el viewport.
+  const trackStyle = {
+    transform: `translateX(calc(50% - ${activeIndex * 400}px - 200px))`
+  };
 
   return (
     <section id="products" className="featured-container">
       <div className="background-split"></div>
 
       <div className="carousel-wrapper">
-        <div className="carousel-track">
+        {/* Aplicamos el estilo dinámico al track */}
+        <div className="carousel-track" style={trackStyle}>
           {products.map((product, index) => (
             <div className={`product-slide ${index === activeIndex ? 'active' : ''}`} key={product.id}>
               <div className="product-card">

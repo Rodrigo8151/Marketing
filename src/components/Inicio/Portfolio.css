@@ -1,135 +1,90 @@
-/* src/components/Portfolio.css */
-
-.portfolio-container {
-  padding: 100px 8%;
-  background-color: #f8f9fa; /* Un blanco un poco más suave */
-  text-align: center;
+:root {
+    --primary-color: #E6397A;
+    --text-light: #ffffff;
+    --text-dark: #333333;
+    --nav-height-initial: 80px;
+    --nav-height-scrolled: 70px;
 }
 
-.portfolio-header h2 {
-  font-size: 2.8rem;
-  margin-bottom: 1rem;
-  color: #333;
+.navbar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    height: var(--nav-height-initial);
+    z-index: 1000;
+    background-color: rgba(15, 15, 15, 0.85);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: height 0.4s ease;
 }
 
-.portfolio-header h2 span {
-  color: #E6397A;
-}
+.navbar-container.scrolled { height: var(--nav-height-scrolled); }
+.navbar-logo a { color: var(--primary-color); font-size: 1.5rem; font-weight: 800; text-decoration: none; letter-spacing: 1px; }
 
-.portfolio-header p {
-  max-width: 700px;
-  margin: 0 auto 50px auto;
-  font-size: 1.1rem;
-  color: #666;
-}
+/* Estilos de Escritorio */
+.navbar-navigation { display: flex; flex-grow: 1; justify-content: center; }
+.navbar-links { display: flex; list-style: none; align-items: center; gap: 40px; margin: 0; padding: 0; }
+.navbar-links a { color: var(--text-light); text-decoration: none; font-size: 1rem; font-weight: 500; position: relative; padding-bottom: 8px; transition: color 0.3s ease-in-out; }
+.navbar-links a::after { content: ''; position: absolute; width: 100%; transform: scaleX(0); height: 2px; bottom: 0; left: 0; background-color: var(--primary-color); transform-origin: bottom right; transition: transform 0.3s ease-out; }
+.navbar-links a:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+.navbar-links .cta-button a { background-color: var(--primary-color); color: var(--text-light); padding: 10px 22px; border-radius: 50px; font-weight: 600; }
+.navbar-links .cta-button a::after { display: none; }
+.navbar-actions { display: flex; align-items: center; gap: 20px; }
+.action-icon { color: var(--text-light); font-size: 1.5rem; cursor: pointer; }
+.hamburger-menu { display: none; }
 
-.portfolio-filters {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 50px;
-}
+/* Tema Claro */
+.navbar-container.light-theme { background-color: rgba(240, 242, 245, 0.9); }
+.navbar-container.light-theme .navbar-links a:not(.cta-button a) { color: var(--text-dark); }
+.navbar-container.light-theme .action-icon { color: var(--text-dark); }
+.navbar-container.light-theme .hamburger-menu span { background-color: var(--text-dark); }
+.navbar-container.light-theme .hamburger-menu.active span { background-color: var(--primary-color); }
 
-.portfolio-filters button {
-  background-color: #ffffff;
-  border: 1px solid #ddd;
-  border-radius: 50px;
-  padding: 12px 25px;
-  font-size: 1rem;
-  font-weight: 500;
-  color: #555;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+/* --- ESTILOS RESPONSIVOS PARA MÓVIL --- */
+@media (max-width: 992px) {
+    .navbar-navigation, .navbar-actions .action-icon { display: none; }
+    
+    .hamburger-menu {
+        display: flex;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        flex-direction: column;
+        gap: 5px;
+        padding: 10px;
+        margin: -10px;
+        position: relative;
+        z-index: 1002; /* El botón siempre encima de todo */
+    }
+    
+    .hamburger-menu span { display: block; width: 28px; height: 3px; background-color: var(--text-light); border-radius: 3px; transition: transform 0.4s ease, background-color 0.4s ease; }
+    .hamburger-menu.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger-menu.active span:nth-child(2) { transform: scale(0); }
+    .hamburger-menu.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+    
+    .navbar-links {
+        position: fixed;
+        inset: 0; /* Abarca toda la pantalla (top, bottom, left, right: 0) */
+        background-color: rgba(10, 10, 10, 0.98);
+        flex-direction: column;
+        justify-content: center;
+        z-index: 1001; /* Por encima de la barra, por debajo del botón */
+        
+        /* TÉCNICA DE ANIMACIÓN FINAL Y ROBUSTA */
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+  
+    .navbar-links.active {
+        opacity: 1;
+        visibility: visible;
+    }
 
-.portfolio-filters button:hover {
-  background-color: #E6397A;
-  color: #fff;
-  border-color: #E6397A;
-  transform: translateY(-2px);
-}
-
-.portfolio-filters button.active {
-  background-color: #E6397A;
-  color: #fff;
-  border-color: #E6397A;
-  box-shadow: 0 4px 15px rgba(230, 57, 122, 0.3);
-}
-
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 30px;
-}
-
-.portfolio-item {
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
-}
-
-.portfolio-item:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-}
-
-.portfolio-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: transform 0.4s ease;
-}
-
-.portfolio-item:hover img {
-  transform: scale(1.05); /* Efecto de zoom sutil */
-}
-
-.portfolio-overlay {
-  position: absolute;
-  bottom: 0; /* Alineado abajo */
-  left: 0;
-  width: 100%;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  padding: 30px 25px;
-  opacity: 0;
-  transform: translateY(20px); /* Empieza un poco abajo */
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  text-align: left;
-}
-
-.portfolio-item:hover .portfolio-overlay {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.portfolio-overlay h3 {
-  font-size: 1.6rem;
-  margin: 0;
-  font-weight: 600;
-}
-
-.portfolio-overlay p {
-  font-size: 1rem;
-  margin: 5px 0 15px 0;
-  opacity: 0.8;
-}
-
-.portfolio-overlay span {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #E6397A;
-  background-color: #fff;
-  color: #E6397A;
-  padding: 5px 12px;
-  border-radius: 50px;
+    .navbar-links a { font-size: 1.8rem; }
 }

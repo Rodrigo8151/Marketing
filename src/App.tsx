@@ -3,7 +3,6 @@
 import Navbar from './components/Inicio/Navbar';
 import Hero from './components/Inicio/Hero';
 import About from './components/Inicio/About';
-import Portfolio from './components/Inicio/Portfolio';
 import Social from './components/Inicio/Social';
 import Contact from './components/Inicio/Contact';
 import MapSection from './components/Inicio/MapSection'; // 1. Importa MapSection
@@ -15,7 +14,6 @@ function App() {
       <Navbar />
       <Hero />
       <About />
-      <Portfolio />
       <Social />
       <Contact />
       <MapSection /> {/* 3. Añádelo aquí */}
