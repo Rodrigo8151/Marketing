@@ -1,15 +1,19 @@
 // src/components/Social.tsx
 
 import './Social.css';
+// 1. Importa los iconos que necesitas de la librería
+import { FaInstagram, FaTwitter, FaFacebookF, FaTiktok, FaYoutube } from 'react-icons/fa';
 
+// 2. Modifica el array para usar los componentes de iconos en lugar de una URL
 const socialLinks = [
-  { name: 'Instagram', handle: '@djaviesport', url: '#', iconUrl: '/icons/instagram.svg' },
-  { name: 'Twitter', handle: '@djaviesport', url: '#', iconUrl: '/icons/twitter.svg' },
-  { name: 'Facebook', handle: 'D\'JAVI ESPORT', url: '#', iconUrl: '/icons/facebook.svg' },
-  { name: 'TikTok', handle: '@djaviesport', url: '#', iconUrl: '/icons/tiktok.svg' }, // Ejemplo, necesitarías el icono
-  { name: 'YouTube', handle: 'D\'JAVI ESPORT TV', url: '#', iconUrl: '/icons/youtube.svg' }, // Ejemplo
+  { name: 'Instagram', handle: '@djaviesport', url: '#', icon: <FaInstagram /> },
+  { name: 'Twitter', handle: '@djaviesport', url: '#', icon: <FaTwitter /> },
+  { name: 'Facebook', handle: 'D\'JAVI ESPORT', url: '#', icon: <FaFacebookF /> },
+  { name: 'TikTok', handle: '@djaviesport', url: '#', icon: <FaTiktok /> },
+  { name: 'YouTube', handle: 'D\'JAVI ESPORT TV', url: '#', icon: <FaYoutube /> },
 ];
 
+// El resto del componente no necesita grandes cambios
 const instagramFeedImages = [
   '/portfolio/p1.jpg', '/portfolio/p4.jpg', '/portfolio/p2.jpg',
   '/portfolio/p3.jpg', '/portfolio/p6.jpg', '/portfolio/p7.jpg',
@@ -26,7 +30,8 @@ const Social = () => {
       <div className="social-cards-grid">
         {socialLinks.map((social) => (
           <a href={social.url} key={social.name} className="social-card" target="_blank" rel="noopener noreferrer">
-            <img src={social.iconUrl} alt={`${social.name} icon`} className="social-icon" />
+            {/* 3. Renderiza el componente del icono directamente. Lo envolvemos en un div para aplicar estilos. */}
+            <div className="social-icon-wrapper">{social.icon}</div>
             <h3>{social.name}</h3>
             <p>{social.handle}</p>
           </a>
@@ -40,7 +45,8 @@ const Social = () => {
             <a href="#" className="instagram-photo" key={index}>
               <img src={imgUrl} alt={`Instagram post ${index + 1}`} />
               <div className="instagram-overlay">
-                <img src="/icons/instagram.svg" alt="Instagram Icon" />
+                {/* También puedes usar el icono aquí si quieres */}
+                <FaInstagram style={{ width: '40px', height: '40px' }} />
               </div>
             </a>
           ))}

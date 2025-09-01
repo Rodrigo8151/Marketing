@@ -38,6 +38,9 @@
   text-decoration: none;
   color: #333;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex; /* Añadido para centrar todo fácilmente */
+  flex-direction: column; /* Añadido */
+  align-items: center; /* Añadido */
 }
 
 .social-card:hover {
@@ -45,17 +48,23 @@
   box-shadow: 0 8px 25px rgba(230, 57, 122, 0.15);
 }
 
-.social-icon {
-  width: 50px;
-  height: 50px;
+/* --- CAMBIOS AQUÍ --- */
+/* Cambiamos .social-icon por .social-icon-wrapper y apuntamos al svg interno */
+.social-icon-wrapper {
   margin-bottom: 15px;
-  filter: grayscale(100%); /* Iconos en gris por defecto */
-  transition: filter 0.3s ease;
+  color: #888; /* Color gris para el icono por defecto */
+  transition: color 0.3s ease;
 }
 
-.social-card:hover .social-icon {
-    filter: grayscale(0%); /* Iconos a color en hover */
+.social-icon-wrapper svg {
+  width: 50px;
+  height: 50px;
 }
+
+.social-card:hover .social-icon-wrapper {
+    color: #E6397A; /* Color principal al pasar el ratón */
+}
+/* --- FIN DE CAMBIOS --- */
 
 .social-card h3 {
   font-size: 1.3rem;
@@ -67,6 +76,7 @@
   color: #777;
 }
 
+/* --- CÓDIGO DEL INSTAGRAM FEED (sin cambios mayores) --- */
 .instagram-feed h3 {
   font-size: 2.2rem;
   color: #333;
@@ -81,7 +91,7 @@
 
 .instagram-photo {
   width: 100%;
-  padding-top: 100%; /* Contenedor cuadrado (Aspect Ratio 1:1) */
+  padding-top: 100%;
   position: relative;
   overflow: hidden;
   border-radius: 12px;
@@ -101,7 +111,6 @@
   transform: scale(1.1);
 }
 
-/* Overlay para el icono de Instagram */
 .instagram-overlay {
     position: absolute;
     top: 0;
@@ -114,15 +123,12 @@
     align-items: center;
     opacity: 0;
     transition: opacity 0.3s ease;
+    color: white; /* Añadido para que el icono de react-icons sea blanco */
 }
 
 .instagram-photo:hover .instagram-overlay {
     opacity: 1;
 }
 
-.instagram-overlay img {
-    width: 40px;
-    height: 40px;
-    filter: brightness(0) invert(1); /* Icono en blanco */
-    transform: none; /* Evita que el icono se escale */
-}
+/* El icono del overlay de instagram no necesita más estilos */
+/* porque los aplicamos directamente en el componente con 'style' */
