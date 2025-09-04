@@ -1,92 +1,140 @@
 // src/components/Hero.tsx
 
-import { useState } from "react";
-import "./Hero.css";
+import { useState, useEffect, useRef } from 'react';
+import './Hero.css';
 
-const productVariants = [
-  { id: 1, img: "/images/product-red.png", alt: "Producto Rojo" },
-  { id: 2, img: "/images/product-blue.png", alt: "Producto Azul" },
-  { id: 3, img: "/images/product-yellow.png", alt: "Producto Amarillo" },
+// --- TÍTULOS MODIFICADOS CON <br /> PARA UN MEJOR AJUSTE VISUAL ---
+const productsData = [
+  { 
+    id: 1, 
+    name: 'ZAPATILLAS<br />QUE TE<br />LLEVAN<br />MÁS<br />LEJOS', 
+    subtitle: 'RENDIMIENTO Y ESTILO SUPERIOR', 
+    description: 'Descubre zapatillas que combinan comodidad, diseño y resistencia para acompañarte en cada momento de tu día, desde la calle hasta el deporte.', 
+    variants: [ 
+      { id: 101, imageUrl: '/portfolio/p1.jpg' }, 
+      { id: 102, imageUrl: '/products/variant1.jpg' }, 
+      { id: 103, imageUrl: '/portfolio/p2.jpg' } 
+    ] 
+  },
+  { 
+    id: 2, 
+    name: 'ELIGE<br />TU<br />LEGADO', // Mismo estilo de título para consistencia
+    subtitle: 'LA SELECCIÓN D\'JAVI ESPORT', 
+    description: 'Cada par es una promesa de calidad y diseño. Equípate con lo mejor y prepárate para dejar tu huella en cada cancha y cada calle.', 
+    variants: [ 
+      { id: 201, imageUrl: '/portfolio/p4.jpg' }, 
+      { id: 202, imageUrl: '/products/variant2.jpg' } 
+    ] 
+  }
 ];
 
-const slides = [
-  {
-    title: "Nueva Colección",
-    subtitle: "Rendimiento y estilo",
-    description:
-      "Descubre la última línea de productos diseñada para atletas que buscan lo mejor en comodidad y diseño.",
-    cta: "Comprar ahora",
-  },
-  {
-    title: "Tecnología Avanzada",
-    subtitle: "Innovación en cada detalle",
-    description:
-      "Cada modelo incorpora materiales de alta calidad para ofrecerte una experiencia única.",
-    cta: "Explorar más",
-  },
-];
+const AUTOPLAY_DELAY = 5000;
 
 const Hero = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [selectedVariant, setSelectedVariant] = useState(productVariants[0]);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [variantIndex, setVariantIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const intervalRef = useRef<number | null>(null);
+
+  const startAutoplay = () => {
+    if (intervalRef.current !== null) return;
+    intervalRef.current = window.setInterval(() => {
+      setSlideIndex(prev => (prev + 1) % productsData.length);
+      setVariantIndex(0);
+    }, AUTOPLAY_DELAY);
+  };
+
+  const stopAutoplay = () => {
+    if (intervalRef.current !== null) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  };
+
+  useEffect(() => {
+    startAutoplay();
+    return () => stopAutoplay();
+  }, []);
+
+  const triggerAnimation = (callback: () => void) => {
+    setIsAnimating(true);
+    setTimeout(() => {
+      callback();
+      setIsAnimating(false);
+    }, 300);
+  };
 
   const goToSlide = (index: number) => {
-    setCurrentSlide(index);
+    stopAutoplay();
+    if (index === slideIndex) return;
+    triggerAnimation(() => {
+      setSlideIndex(index);
+      setVariantIndex(0);
+    });
+  };
+
+  const handleVariantSelect = (vIndex: number) => {
+    stopAutoplay();
+    if (vIndex === variantIndex) return;
+    triggerAnimation(() => {
+      setVariantIndex(vIndex);
+    });
   };
 
   return (
-    <section className="hero-container">
-      <div
-        className="slides-wrapper"
-        style={{ transform: `translateX(-${currentSlide * 100}%)` }}
-      >
-        {slides.map((slide, index) => (
-          <div className="slide" key={index}>
-            {/* Área de producto */}
-            <div className="product-display-area">
-              <img
-                src={selectedVariant.img}
-                alt={selectedVariant.alt}
-                className="main-product-image"
-              />
-              <div className="color-variants-panel">
-                {productVariants.map((variant) => (
-                  <button
-                    key={variant.id}
-                    className={`variant-selector ${
-                      selectedVariant.id === variant.id ? "active" : ""
-                    }`}
-                    onClick={() => setSelectedVariant(variant)}
-                  >
-                    <img src={variant.img} alt={variant.alt} />
-                  </button>
-                ))}
-              </div>
+    <section 
+      id="home" 
+      className="hero-container"
+      onMouseEnter={stopAutoplay}
+      onMouseLeave={startAutoplay}
+    >
+      <div className="slides-wrapper" style={{ transform: `translateX(-${slideIndex * 100}%)` }}>
+        {productsData.map((product, pIndex) => (
+          <div className="slide" key={product.id}>
+            <div className="color-variants-panel">
+              {product.variants.map((variant, vIndex) => (
+                <div 
+                  className={`variant-selector ${pIndex === slideIndex && vIndex === variantIndex ? 'active' : ''}`}
+                  key={variant.id}
+                  onClick={() => handleVariantSelect(vIndex)}
+                >
+                  <img src={variant.imageUrl} alt={`Variant ${vIndex + 1}`} />
+                </div>
+              ))}
             </div>
 
-            {/* Área de información */}
+            <div className="product-display-area">
+              <div className="background-shapes">
+                <div className="shape shape1"></div>
+                <div className="shape shape2"></div>
+              </div>
+              <img 
+                src={product.variants[pIndex === slideIndex ? variantIndex : 0].imageUrl} 
+                alt={product.name.replace(/<br \/>/g, ' ')} 
+                className={`main-product-image ${isAnimating ? 'animating' : ''}`}
+              />
+            </div>
+            
             <div className="info-panel">
               <div className="info-content">
-                <h2>{slide.subtitle}</h2>
-                <h1>{slide.title}</h1>
-                <p>{slide.description}</p>
-                <a href="#" className="buy-now-btn">
-                  {slide.cta}
-                </a>
+                {/* CAMBIO CLAVE: Usamos dangerouslySetInnerHTML para renderizar las etiquetas <br /> */}
+                <h1 dangerouslySetInnerHTML={{ __html: product.name }} />
+                <h2>{product.subtitle}</h2>
+                <p>{product.description}</p>
+                <a href="/productos?categoria=nuevo" className="buy-now-btn">BUY NOW</a>
               </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Dots de navegación */}
       <div className="slider-dots-nav">
-        {slides.map((_, index) => (
+        {productsData.map((_, index) => (
           <button
             key={index}
-            className={`nav-dot ${currentSlide === index ? "active" : ""}`}
+            className={`nav-dot ${slideIndex === index ? 'active' : ''}`}
             onClick={() => goToSlide(index)}
-          />
+          ></button>
         ))}
       </div>
     </section>
