@@ -1,0 +1,188 @@
+/* --- Estilos Generales de la Página de Tienda --- */
+.shop-page {
+    padding: 120px 7% 40px 7%; 
+    background-color: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+.shop-container { display: flex; gap: 40px; }
+
+/* --- Barra Lateral de Filtros --- */
+.filters-sidebar { flex: 0 0 240px; }
+.filters-title { font-size: 1.5rem; font-weight: 700; letter-spacing: 1px; margin-bottom: 20px; }
+.filter-group { border-bottom: 1px solid #e0e0e0; }
+.filter-group-header { width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 20px 0; background: none; border: none; cursor: pointer; text-align: left; }
+.filter-group-title { font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.filter-group-toggle { font-size: 1.5rem; font-weight: 400; transition: transform 0.3s ease; }
+.filter-group.open .filter-group-toggle { transform: rotate(45deg); }
+.filter-group-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.4s ease-out; }
+.filter-group.open .filter-group-content { max-height: 500px; padding-bottom: 20px; transition: max-height 0.4s ease-in, padding 0.4s ease-in; }
+.filter-group-content label { display: flex; align-items: center; cursor: pointer; font-size: 0.95rem; color: #333; margin-bottom: 15px; }
+.filter-group-content input[type="checkbox"] { margin-right: 12px; width: 16px; height: 16px; }
+.filter-group-content div { color: #888; }
+
+/* --- Área Principal de Productos --- */
+.product-display { flex-grow: 1; }
+.product-display-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+.product-display-header span { font-size: 0.9rem; color: #555; }
+.sort-dropdown { padding: 10px 15px; border: 1px solid #ccc; border-radius: 4px; background-color: #fff; }
+.product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; }
+
+/* --- Estilo de Tarjeta de Producto --- */
+.product-card { background-color: #fff; border-radius: 16px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+.product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
+.product-image-container { position: relative; background-color: #f7f7f7; }
+.product-image { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; }
+.discount-badge { position: absolute; top: 15px; left: 15px; background-color: #E6397A; color: #fff; padding: 5px 10px; font-size: 0.8rem; font-weight: 700; border-radius: 8px; z-index: 2; }
+.product-details { padding: 15px 20px 20px 20px; text-align: left; }
+.product-category { font-size: 0.75rem; font-weight: 600; color: #555; margin-bottom: 8px; text-transform: uppercase; }
+.product-name { font-size: 1rem; font-weight: 500; color: #222; line-height: 1.4; margin-bottom: 12px; }
+.product-price-container { display: flex; align-items: baseline; gap: 10px; }
+.sale-price { font-size: 1.1rem; font-weight: 700; color: #E6397A; }
+.original-price { font-size: 0.9rem; color: #888; text-decoration: line-through; }
+
+
+/* --- ESTILO PARA EL ENLACE DE LA TARJETA DE PRODUCTO --- */
+.product-card-link {
+    text-decoration: none; /* Elimina el subrayado */
+    color: inherit;      /* Hereda el color del texto de su contenedor */
+}
+
+/* ... (AQUÍ VA TODO TU CSS ANTERIOR, HASTA LA SECCIÓN DE RESPONSIVIDAD) ... */
+
+/* --- ESTILO PARA EL ENLACE DE LA TARJETA DE PRODUCTO --- */
+.product-card-link {
+    text-decoration: none; /* Elimina el subrayado */
+    color: inherit;      /* Hereda el color del texto de su contenedor */
+}
+
+
+/* ========================================================= */
+/* === NUEVA Y MEJORADA SECCIÓN DE RESPONSIVIDAD (MÓVIL) === */
+/* ========================================================= */
+
+/* --- Botones y elementos que solo existen en móvil --- */
+.filter-toggle-btn, .close-filters-btn {
+    display: none; /* Ocultos por defecto en escritorio */
+}
+.filters-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.filters-overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* --- Estilos para tablets y móviles (hasta 992px) --- */
+@media (max-width: 992px) {
+    .shop-page {
+        padding: 100px 5% 40px 5%;
+    }
+
+    /* El contenedor ya no se apila, el sidebar se saldrá del flujo */
+    .shop-container {
+        flex-direction: row;
+        gap: 0;
+    }
+
+    /* --- El Sidebar Off-Canvas --- */
+    .filters-sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 320px;
+        max-width: 85%;
+        height: 100vh;
+        background-color: #fff;
+        z-index: 1000;
+        padding: 20px;
+        transform: translateX(-100%);
+        transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        overflow-y: auto;
+        box-shadow: 5px 0 25px rgba(0,0,0,0.15);
+    }
+    .filters-sidebar.is-open {
+        transform: translateX(0);
+    }
+
+    .filters-sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+    }
+    .filters-title { margin-bottom: 0; }
+
+    /* --- Botón de Abrir Filtros --- */
+    .filter-toggle-btn {
+        display: inline-block;
+        padding: 8px 16px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #fff;
+        font-weight: 600;
+        font-size: 0.85rem;
+        cursor: pointer;
+    }
+
+    /* --- Botón de Cerrar Filtros --- */
+    .close-filters-btn {
+        display: block;
+        background: none;
+        border: none;
+        font-size: 2rem;
+        font-weight: 300;
+        line-height: 1;
+        cursor: pointer;
+        color: #333;
+    }
+
+    .product-display-header { 
+        justify-content: space-between; 
+        width: 100%;
+    }
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+    }
+}
+
+
+/* --- Ajustes finos para teléfonos móviles (hasta 480px) --- */
+@media (max-width: 480px) {
+    .shop-page {
+        padding: 90px 15px 30px 15px;
+    }
+
+    .product-display-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 15px;
+    }
+    .header-left { justify-content: space-between; }
+    
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    .product-details { padding: 12px 15px 15px 15px; }
+    .product-name { font-size: 0.9rem; margin-bottom: 10px; }
+    .sale-price { font-size: 1rem; }
+}

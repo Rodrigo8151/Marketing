@@ -1,9 +1,78 @@
-/* src/components/Footer.css */
 .footer-container {
-  padding: 30px;
-  text-align: center;
   background-color: #1a1a1a;
-  color: #aaa;
+  color: #ccc;
+  padding: 40px 20px 20px;
   font-size: 0.9rem;
   border-top: 3px solid #E6397A;
+}
+
+.footer-content {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto 20px;
+}
+
+.footer-section {
+  flex: 1;
+  min-width: 220px;
+  margin: 10px;
+}
+
+.footer-section h3,
+.footer-section h4 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.footer-section p {
+  line-height: 1.6;
+}
+
+.footer-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-section ul li {
+  margin: 8px 0;
+  display: flex;
+  align-items: center;
+}
+
+.footer-section ul li a {
+  text-decoration: none;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.3s;
+}
+
+.footer-section ul li a:hover {
+  color: #E6397A;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+}
+
+.social-links li a {
+  font-size: 1.5rem;
+  color: #aaa;
+  transition: color 0.3s;
+}
+
+.social-links li a:hover {
+  color: #E6397A;
+}
+
+.footer-bottom {
+  text-align: center;
+  border-top: 1px solid #333;
+  padding-top: 15px;
+  font-size: 0.85rem;
+  color: #888;
 }

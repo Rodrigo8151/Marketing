@@ -1,36 +1,36 @@
+// src/components/Navbar.tsx (CORREGIDO)
+
 import React, { useState, useEffect } from 'react';
-import { FaUserCircle, FaShoppingBag } from 'react-icons/fa';
+import { LuSearch, LuUser, LuShoppingBag } from 'react-icons/lu';
+import { Link, useLocation } from 'react-router-dom';
 import './Navbar.css';
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   const navItems = [
-    { href: '#home', label: 'Inicio' },
-    { href: '#about', label: 'Nosotros' },
-    { href: '#portfolio', label: 'Productos' },
-    { href: '#social', label: 'Comunidad' },
-    { href: '#map', label: 'Tiendas' },
+    { label: 'Nuevo', to: '/productos?categoria=nuevo' },
+    { label: 'Hombre', to: '/productos?genero=Hombre' },
+    { label: 'Mujer', to: '/productos?genero=Mujer' },
+    { label: 'Niños', to: '/productos?genero=Niños' },
+    { label: 'Marcas', to: '/marcas' },
+    { label: 'Ofertas', to: '/productos', isSpecial: true },
   ];
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
     };
-
-    document.body.style.overflow = isOpen ? 'hidden' : 'unset';
-
     window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
+  useEffect(() => { setIsOpen(false); }, [location]);
+  useEffect(() => { document.body.style.overflow = isOpen ? 'hidden' : 'unset'; }, [isOpen]);
 
   const toggleMenu = () => setIsOpen(!isOpen);
-  const closeMenu = () => setIsOpen(false);
 
   const navClasses = `navbar-container ${scrolled ? 'scrolled' : ''}`;
   const navLinksClasses = `navbar-links ${isOpen ? 'active' : ''}`;
@@ -38,37 +38,39 @@ const Navbar: React.FC = () => {
 
   return (
     <header className={navClasses}>
+      {/* --- ESTA ES LA LÍNEA CORREGIDA --- */}
       <div className="navbar-logo">
-        <a href="#home" onClick={closeMenu}>D'JAVI ESPORT</a>
+        <Link to="/">D'JAVI ESPORT</Link>
       </div>
 
-      {/* Menú para Escritorio */}
       <nav className="navbar-navigation">
         <ul>
           {navItems.map(item => (
-            <li key={item.href}><a href={item.href}>{item.label}</a></li>
+            <li key={item.label}>
+              <Link to={item.to} className={`nav-link ${item.isSpecial ? 'special' : ''}`}>
+                {item.label}
+              </Link>
+            </li>
           ))}
-          <li className="cta-button"><a href="#contact">Contacto</a></li>
         </ul>
       </nav>
-
-      {/* Menú para Móvil (Overlay) */}
       <ul className={navLinksClasses}>
         {navItems.map(item => (
-          <li key={item.href} onClick={closeMenu}><a href={item.href}>{item.label}</a></li>
+          <li key={item.label}><Link to={item.to}>{item.label}</Link></li>
         ))}
-        <li className="cta-button" onClick={closeMenu}><a href="#contact">Contacto</a></li>
       </ul>
-
       <div className="navbar-actions">
-        <a href="/login" aria-label="Cuenta de usuario" className="action-icon"><FaUserCircle /></a>
-        <a href="/cart" aria-label="Carrito de compras" className="action-icon"><FaShoppingBag /></a>
+        <button className="action-icon" aria-label="Buscar"><LuSearch /></button>
+        <Link to="/login" className="action-icon" aria-label="Cuenta de usuario"><LuUser /></Link>
+        <Link to="/cart" className="action-icon" aria-label="Carrito de compras">
+          <div className="cart-icon-wrapper">
+            <LuShoppingBag />
+            <span className="cart-badge">0</span>
+          </div>
+        </Link>
       </div>
-
       <button className={hamburgerClasses} onClick={toggleMenu} aria-label="Toggle Menu">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </button>
     </header>
   );
