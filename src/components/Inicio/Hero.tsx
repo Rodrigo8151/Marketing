@@ -1,5 +1,7 @@
-// src/components/Hero.tsx
+// src/components/Hero.tsx (CORREGIDO)
 
+// --- PASO 1: IMPORTAMOS 'Link' DESDE react-router-dom ---
+import { Link } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import './Hero.css';
 
@@ -114,15 +116,18 @@ const Hero = () => {
                 className={`main-product-image ${isAnimating ? 'animating' : ''}`}
               />
             </div>
-            //nuevo
+            
             <div className="info-panel">
               <div className="info-content">
-                {/* CAMBIO CLAVE: Usamos dangerouslySetInnerHTML para renderizar las etiquetas <br /> */}
                 <h1 dangerouslySetInnerHTML={{ __html: product.name }} />
                 <h2>{product.subtitle}</h2>
                 <p>{product.description}</p>
-               
-                <a href="/productos?categoria=nuevo" className="buy-now-btn">BUY NOW</a>
+
+                {/* --- PASO 2: REEMPLAZAMOS <a> POR <Link> Y 'href' POR 'to' --- */}
+                <Link to="/productos?categoria=nuevo" className="buy-now-btn">
+                  BUY NOW
+                </Link>
+
               </div>
             </div>
           </div>
@@ -142,4 +147,4 @@ const Hero = () => {
   );
 };
 
-export default Hero;//nuevo
+export default Hero;
