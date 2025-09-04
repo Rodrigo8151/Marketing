@@ -114,13 +114,14 @@ const Hero = () => {
                 className={`main-product-image ${isAnimating ? 'animating' : ''}`}
               />
             </div>
-            
+            //nuevo
             <div className="info-panel">
               <div className="info-content">
                 {/* CAMBIO CLAVE: Usamos dangerouslySetInnerHTML para renderizar las etiquetas <br /> */}
                 <h1 dangerouslySetInnerHTML={{ __html: product.name }} />
                 <h2>{product.subtitle}</h2>
                 <p>{product.description}</p>
+               
                 <a href="/productos?categoria=nuevo" className="buy-now-btn">BUY NOW</a>
               </div>
             </div>
