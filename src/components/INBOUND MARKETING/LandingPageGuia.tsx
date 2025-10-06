@@ -4,7 +4,7 @@ import '../Inicio/HomePage.css';
 const LandingPageGuia = () => (
   <div className="landing-page">
     <div className="landing-content">
-      <img src="/img/guia-portada.jpg" alt="Guía de Cuidado de Zapatillas" />
+      <img src="/blog3.jpg" alt="Guía de Cuidado de Zapatillas" />
       <div>
         <h2>Descarga GRATIS la Guía Definitiva de Cuidado de Zapatillas</h2>
         <p>Aprende los secretos para duplicar la vida útil de tu calzado favorito. ¡Mantén tus zapatillas como nuevas!</p>
