@@ -1,0 +1,169 @@
+/* ============================================= */
+/*       ESTILOS PARA LANDING PAGES              */
+/* ============================================= */
+
+.landing-page {
+  max-width: 1100px;
+  margin: 60px auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  font-family: 'Poppins', sans-serif;
+}
+
+.landing-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 50px;
+  align-items: center;
+}
+
+.landing-content img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.landing-content h2 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  line-height: 1.3;
+  margin-bottom: 20px;
+}
+
+.landing-content p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 25px;
+}
+
+.landing-content ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 30px;
+}
+
+.landing-content li {
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.landing-content li::before {
+  content: '✓';
+  color: #28a745;
+  font-size: 1.5rem;
+  margin-right: 15px;
+  font-weight: bold;
+}
+
+/* Estilos del formulario interactivo */
+.landing-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.phone-input-group {
+  display: flex;
+  gap: 10px;
+}
+
+/* --- SOLUCIÓN DEFINITIVA PARA LOS CAMPOS --- */
+
+/* 1. Estilos base para ambos campos */
+.phone-input-group select,
+.phone-input-group input {
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+/* 2. Dejamos que el select tenga su ancho natural (auto) */
+.phone-input-group select {
+  background-color: #f8f9fa;
+  flex-shrink: 0; /* Evita que se encoja si no hay espacio */
+}
+
+/* 3. Hacemos que el input crezca para llenar el espacio restante */
+.phone-input-group input {
+  flex-grow: 1; /* Esta es la clave: el input se expande */
+  width: 100%; /* Ocupa todo el espacio que se le asigna */
+}
+
+
+.phone-input-group select:focus,
+.phone-input-group input:focus {
+  outline: none;
+  border-color: #E6397A;
+  box-shadow: 0 0 0 3px rgba(230, 57, 122, 0.2);
+}
+
+/* Botón */
+.btn-submit {
+  /* Ancho se ajusta al contenido + padding */
+  width: auto; 
+  align-self: flex-start; /* Evita que se estire al 100% del contenedor */
+  padding: 16px 32px;
+  border: none;
+  background-color: #E6397A;
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-submit:hover:not(:disabled) {
+  background-color: #C12F66;
+  transform: translateY(-2px);
+}
+
+.btn-submit:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Mensaje de confirmación */
+.confirmation-message {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #e9f7ef;
+  color: #1c7430;
+  border: 1px solid #a3d9b4;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+  .landing-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .landing-content h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .phone-input-group {
+    flex-direction: column;
+  }
+  .phone-input-group select,
+  .phone-input-group input {
+    width: 100%;
+  }
+  .btn-submit {
+    width: 100%;
+  }
+}

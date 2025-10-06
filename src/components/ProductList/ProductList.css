@@ -1,10 +1,17 @@
 /* --- Estilos Generales de la Página de Tienda --- */
 .shop-page {
-    padding: 120px 7% 40px 7%; 
+    padding: 0; /* Mantenemos esto para que el banner ocupe todo el ancho */
     background-color: #fff;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
-.shop-container { display: flex; gap: 40px; }
+
+.shop-container { 
+    display: flex; 
+    gap: 40px; 
+    padding: 0 7% 40px 7%; /* Quitamos el padding-top de aquí */
+    /* --- SOLUCIÓN: AÑADIMOS MARGEN SUPERIOR PARA CREAR ESPACIO --- */
+    margin-top: 40px; 
+}
 
 /* --- Barra Lateral de Filtros --- */
 .filters-sidebar { flex: 0 0 240px; }
@@ -39,150 +46,95 @@
 .product-price-container { display: flex; align-items: baseline; gap: 10px; }
 .sale-price { font-size: 1.1rem; font-weight: 700; color: #E6397A; }
 .original-price { font-size: 0.9rem; color: #888; text-decoration: line-through; }
+.product-card-link { text-decoration: none; color: inherit; }
 
-
-/* --- ESTILO PARA EL ENLACE DE LA TARJETA DE PRODUCTO --- */
-.product-card-link {
-    text-decoration: none; /* Elimina el subrayado */
-    color: inherit;      /* Hereda el color del texto de su contenedor */
-}
-
-/* ... (AQUÍ VA TODO TU CSS ANTERIOR, HASTA LA SECCIÓN DE RESPONSIVIDAD) ... */
-
-/* --- ESTILO PARA EL ENLACE DE LA TARJETA DE PRODUCTO --- */
-.product-card-link {
-    text-decoration: none; /* Elimina el subrayado */
-    color: inherit;      /* Hereda el color del texto de su contenedor */
-}
-
-
-/* ========================================================= */
-/* === NUEVA Y MEJORADA SECCIÓN DE RESPONSIVIDAD (MÓVIL) === */
-/* ========================================================= */
-
-/* --- Botones y elementos que solo existen en móvil --- */
-.filter-toggle-btn, .close-filters-btn {
-    display: none; /* Ocultos por defecto en escritorio */
-}
-.filters-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-.filters-overlay.is-open {
-    opacity: 1;
-    visibility: visible;
-}
-
-
-/* --- Estilos para tablets y móviles (hasta 992px) --- */
+/* --- Responsividad (Móvil) --- */
+.filter-toggle-btn, .close-filters-btn { display: none; }
+.filters-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 999; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+.filters-overlay.is-open { opacity: 1; visibility: visible; }
 @media (max-width: 992px) {
-    .shop-page {
-        padding: 100px 5% 40px 5%;
-    }
-
-    /* El contenedor ya no se apila, el sidebar se saldrá del flujo */
-    .shop-container {
-        flex-direction: row;
-        gap: 0;
-    }
-
-    /* --- El Sidebar Off-Canvas --- */
-    .filters-sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 320px;
-        max-width: 85%;
-        height: 100vh;
-        background-color: #fff;
-        z-index: 1000;
-        padding: 20px;
-        transform: translateX(-100%);
-        transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        overflow-y: auto;
-        box-shadow: 5px 0 25px rgba(0,0,0,0.15);
-    }
-    .filters-sidebar.is-open {
-        transform: translateX(0);
-    }
-
-    .filters-sidebar-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-        padding-bottom: 15px;
-        border-bottom: 1px solid #eee;
-    }
+    .shop-container { flex-direction: row; gap: 0; padding: 40px 5%; margin-top: 30px; }
+    .filters-sidebar { position: fixed; top: 0; left: 0; width: 320px; max-width: 85%; height: 100vh; background-color: #fff; z-index: 1000; padding: 20px; transform: translateX(-100%); transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94); overflow-y: auto; box-shadow: 5px 0 25px rgba(0,0,0,0.15); }
+    .filters-sidebar.is-open { transform: translateX(0); }
+    .filters-sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding-bottom: 15px; border-bottom: 1px solid #eee; }
     .filters-title { margin-bottom: 0; }
-
-    /* --- Botón de Abrir Filtros --- */
-    .filter-toggle-btn {
-        display: inline-block;
-        padding: 8px 16px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background-color: #fff;
-        font-weight: 600;
-        font-size: 0.85rem;
-        cursor: pointer;
-    }
-
-    /* --- Botón de Cerrar Filtros --- */
-    .close-filters-btn {
-        display: block;
-        background: none;
-        border: none;
-        font-size: 2rem;
-        font-weight: 300;
-        line-height: 1;
-        cursor: pointer;
-        color: #333;
-    }
-
-    .product-display-header { 
-        justify-content: space-between; 
-        width: 100%;
-    }
-    .header-left {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-    
-    .product-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 20px;
-    }
+    .filter-toggle-btn { display: inline-block; padding: 8px 16px; border: 1px solid #ccc; border-radius: 8px; background-color: #fff; font-weight: 600; font-size: 0.85rem; cursor: pointer; }
+    .close-filters-btn { display: block; background: none; border: none; font-size: 2rem; font-weight: 300; line-height: 1; cursor: pointer; color: #333; }
+    .product-display-header { justify-content: space-between; width: 100%; }
+    .header-left { display: flex; align-items: center; gap: 15px; }
+    .product-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
 }
-
-
-/* --- Ajustes finos para teléfonos móviles (hasta 480px) --- */
 @media (max-width: 480px) {
-    .shop-page {
-        padding: 90px 15px 30px 15px;
-    }
-
-    .product-display-header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 15px;
-    }
+    .shop-container { padding: 30px 15px; margin-top: 20px; }
+    .product-display-header { flex-direction: column; align-items: stretch; gap: 15px; }
     .header-left { justify-content: space-between; }
-    
-    .product-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 15px;
-    }
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
     .product-details { padding: 12px 15px 15px 15px; }
     .product-name { font-size: 0.9rem; margin-bottom: 10px; }
     .sale-price { font-size: 1rem; }
 }
+
+/* ========================================================= */
+/* --- ESTILOS PARA EL BANNER Y MODAL (ACTUALIZADOS) --- */
+/* ========================================================= */
+.club-banner {
+  background-color: #4A6C65; /* Color verde del banner */
+  color: #FFFFFF;
+  padding: 20px 30px;
+  width: 100%;
+  position: relative; 
+  z-index: 4; 
+  box-sizing: border-box; /* Importante para que el padding no afecte el ancho */
+}
+
+.banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.banner-content span {
+  font-weight: bold;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+}
+
+.banner-content button {
+  background-color: #FFFFFF;
+  color: #000000;
+  border: 1px solid #000000;
+  padding: 14px 22px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.banner-content button:hover {
+  background-color: #f0f0f0;
+}
+
+/* El resto de los estilos del modal se mantienen igual y funcionan correctamente */
+.modal-backdrop { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; animation: fadeIn 0.3s forwards; }
+.modal-content { background-color: #fff; color: #000; padding: 40px; border-radius: 8px; width: 90%; max-width: 450px; position: relative; transform: scale(0.9); animation: scaleUp 0.3s forwards; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleUp { from { transform: scale(0.9); } to { transform: scale(1); } }
+.modal-close-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; cursor: pointer; color: #888; }
+.modal-header { text-align: center; margin-bottom: 25px; }
+.modal-header h3 { font-size: 1.5rem; margin-bottom: 10px; }
+.modal-header p { color: #555; }
+.modal-form input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; }
+.social-login-icons { display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; }
+.social-login-icons button { width: 50px; height: 50px; border-radius: 50%; border: 1px solid #ccc; background: #fff; font-size: 1.5rem; font-weight: bold; cursor: pointer; }
+.privacy-notice { font-size: 0.8rem; color: #888; text-align: center; margin-bottom: 20px; }
+.submit-arrow-btn { display: block; margin: 0 auto; width: 60px; height: 60px; border-radius: 50%; background-color: #000; color: #fff; border: none; cursor: pointer; }
+.success-message { text-align: center; }
+.success-message h3 { font-size: 1.8rem; color: #28a745; margin-bottom: 15px; }
+.success-message p { margin-bottom: 10px; }
+.btn-success-close { background-color: #000; color: #fff; border: none; padding: 10px 20px; border-radius: 20px; margin-top: 20px; cursor: pointer; }

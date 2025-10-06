@@ -1,132 +1,42 @@
-/* src/components/Hero.css (NUEVA VERSIÓN ESTILO RALPH LAUREN) */
-
-.hero-container {
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow: hidden;
-  background-color: #202020; /* Color de fondo mientras carga la imagen */
-  margin-top: -70px; /* Mantenemos el ajuste para el navbar */
-  color: #FFFFFF;
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
 }
 
-.slides-wrapper {
-  display: flex;
-  height: 100%;
-  transition: transform 0.9s cubic-bezier(0.7, 0, 0.3, 1);
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-/* --- ESTRUCTURA DE IMAGEN DE FONDO --- */
-.slide {
-  width: 100vw;
-  height: 100%;
-  flex-shrink: 0;
-  position: relative;
-  display: flex;
-  align-items: center; /* Centra el contenido verticalmente */
-  background-size: cover;
-  background-position: center;
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
-/* Capa semitransparente para asegurar que el texto sea legible */
-.hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, rgba(0, 0, 0, 0.6) 0%, rgba(0, 0, 0, 0.1) 100%);
-  z-index: 1;
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
 }
 
-/* --- PANEL DE TEXTO SUPERPUESTO --- */
-.hero-content {
-  position: relative;
-  z-index: 2;
-  max-width: 550px;
-  padding: 0 7%; /* Espaciado lateral */
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+.card {
+  padding: 2em;
 }
 
-.hero-brand {
-  display: block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin-bottom: 15px;
-  color: rgba(255, 255, 255, 0.8);
+.read-the-docs {
+  color: #888;
 }
-
-.hero-title {
-  /* Usamos una fuente serif para un look clásico y elegante */
-  font-family: "Georgia", "Times New Roman", serif;
-  font-size: clamp(2.5rem, 6vw, 4rem); /* Tamaño de fuente adaptable */
-  font-weight: 400; /* Las fuentes serif se ven mejor con menos peso */
-  line-height: 1.1;
-  margin-bottom: 20px;
-}
-
-.hero-description {
-  font-size: 1rem;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 400px;
-  margin-bottom: 30px;
-}
-
-.hero-cta {
-  display: inline-block;
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: #FFFFFF;
-  text-decoration: none;
-  padding-bottom: 5px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-  transition: all 0.3s ease;
-}
-
-.hero-cta:hover {
-  border-bottom-color: #FFFFFF;
-  color: #FFFFFF;
-}
-
-.hero-cta span {
-  display: inline-block;
-  margin-left: 8px;
-  transition: transform 0.3s ease;
-}
-
-.hero-cta:hover span {
-  transform: translateX(5px);
-}
-
-/* --- NAVEGACIÓN DE PUNTOS --- */
-.slider-dots-nav {
-  position: absolute;
-  bottom: 5%;
-  left: 7%; /* Alineado con el texto */
-  transform: none;
-  display: flex;
-  gap: 15px;
-  z-index: 10;
-}
-
-.nav-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.3);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.nav-dot.active {
-  background-color: #FFFFFF;
-  transform: scale(1.2);
-}
-
-/* --- RES

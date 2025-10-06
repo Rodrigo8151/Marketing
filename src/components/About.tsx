@@ -9,7 +9,7 @@ const products = [
   { id: 1, brand: "Ronnie Fieg x Puma", name: "R698 Mid - Sakura", description: "Inspirado en las flores de cerezo japonesas.", price: 220, imageUrl: "/portfolio/p1.jpg", color: "#E5528A" },
   { id: 2, brand: "Nike", name: "Air Max 90 Infrared", description: "Sin duda uno de los modelos más icónicos de la historia.", price: 129, imageUrl: "/portfolio/p2.jpg", color: "#E63946" },
   { id: 3, brand: "Adidas", name: "Yeezy Boosts 350", description: "Presenta una parte superior compuesta de Primeknit tonal.", price: 199, imageUrl: "/portfolio/p3.jpg", color: "#2D3A3A" },
-  { id: 4, brand: "D'JAVI SPORT", name: "Apex Runner", description: "Nuestro diseño insignia, listo para cualquier desafío.", price: 180, imageUrl: "/portfolio/p4.jpg", color: "#457B9D" }
+  { id: 4, brand: "D'JAVI SPORT", name: "Apex Runner", description: "Nuestro diseño insignia, listo arpa cualquier desafío.", price: 180, imageUrl: "/portfolio/p4.jpg", color: "#457B9D" }
 ];
 
 const About = () => {
@@ -22,22 +22,13 @@ const About = () => {
   const goToPrev = () => {
     setActiveIndex((prevIndex) => (prevIndex - 1 + products.length) % products.length);
   };
-  
-  // === LA LÓGICA CLAVE QUE FALTABA ===
-  // Calculamos el desplazamiento necesario para centrar el slide activo.
-  // En escritorio: 360px de ancho + 40px de margen = 400px por slide.
-  // El cálculo centra el carrusel en el viewport.
-  const trackStyle = {
-    transform: `translateX(calc(50% - ${activeIndex * 400}px - 200px))`
-  };
 
   return (
     <section id="products" className="featured-container">
       <div className="background-split"></div>
 
       <div className="carousel-wrapper">
-        {/* Aplicamos el estilo dinámico al track */}
-        <div className="carousel-track" style={trackStyle}>
+        <div className="carousel-track">
           {products.map((product, index) => (
             <div className={`product-slide ${index === activeIndex ? 'active' : ''}`} key={product.id}>
               <div className="product-card">

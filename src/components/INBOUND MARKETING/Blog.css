@@ -1,0 +1,179 @@
+/* ============================================= */
+/*          ESTILOS GENERALES DEL BLOG           */
+/* ============================================= */
+:root {
+  /* --- CAMBIO DE COLOR PRINCIPAL --- */
+  --primary-color: #E6397A; 
+  --primary-hover-color: #C12F66; /* Un tono más oscuro para el hover */
+  --dark-color: #2c3e50;
+  --gray-color: #555;
+  --light-gray-color: #f8f9fa;
+  --border-color: #e9ecef;
+}
+
+/* ============================================= */
+/*        PÁGINA LISTADO DE BLOG (BlogPage)      */
+/* ============================================= */
+
+.blog-page-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.blog-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.blog-header h2 {
+  font-size: 2.8rem;
+  color: var(--dark-color);
+  margin-bottom: 10px;
+}
+
+.blog-header h2 span {
+  /* Color actualizado */
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+.blog-header p {
+  font-size: 1.1rem;
+  color: var(--gray-color);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.blog-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  text-decoration: none;
+  color: var(--dark-color);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+}
+
+.blog-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.blog-card-content {
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.blog-card-content h3 {
+  font-size: 1.4rem;
+  margin: 0 0 15px 0;
+}
+
+.blog-card-content p {
+  font-size: 1rem;
+  color: var(--gray-color);
+  line-height: 1.6;
+  flex-grow: 1;
+  margin-bottom: 20px;
+}
+
+.blog-card-content span {
+  /* Color actualizado */
+  color: var(--primary-color);
+  font-weight: 600;
+  align-self: flex-start;
+  text-decoration: none;
+}
+
+/* ============================================= */
+/*      PÁGINA ARTÍCULO INDIVIDUAL (BlogPost)    */
+/* ============================================= */
+
+.blog-post-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* ... (Estilos de .blog-post-hero, h1, etc. se mantienen) ... */
+.blog-post-hero{width:100%;height:auto;max-height:450px;object-fit:cover;border-radius:12px;margin-bottom:30px}.blog-post-content h1{font-size:2.5rem;color:var(--dark-color);line-height:1.2;margin-bottom:15px}.post-meta{color:var(--gray-color);margin-bottom:30px;font-size:.9rem;border-bottom:1px solid var(--border-color);padding-bottom:15px}.post-article-content p{font-size:1.1rem;line-height:1.8;color:#333;margin-bottom:20px}.post-article-content h3{font-size:1.8rem;color:var(--dark-color);margin-top:40px;margin-bottom:15px}.post-article-content strong{color:var(--dark-color);font-weight:600}
+
+/* Botón de volver */
+.btn-back {
+  display: inline-block;
+  margin-top: 40px;
+  padding: 12px 24px;
+  background-color: var(--dark-color);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.btn-back:hover {
+  background-color: #4a6888;
+}
+
+/* ============================================= */
+/*          SECCIÓN CTA (LLAMADA A LA ACCIÓN)    */
+/* ============================================= */
+
+.cta-container {
+  background-color: var(--light-gray-color);
+  text-align: center;
+  padding: 60px 20px;
+  margin-top: 60px;
+}
+
+.cta-container h2 {
+  font-size: 2.2rem;
+  color: var(--dark-color);
+  margin-bottom: 15px;
+}
+
+.cta-container p {
+  font-size: 1.1rem;
+  color: var(--gray-color);
+  margin-bottom: 30px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-container .btn-submit {
+    /* Color actualizado */
+    background: var(--primary-color);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+.cta-container .btn-submit:hover {
+    /* Color hover actualizado */
+    background-color: var(--primary-hover-color);
+}
+
+/* ... (Responsive se mantiene igual) ... */
+@media (max-width:768px){.blog-header h2,.blog-post-content h1{font-size:2.2rem}.post-article-content h3{font-size:1.5rem}}

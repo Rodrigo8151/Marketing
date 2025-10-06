@@ -1,10 +1,9 @@
-// src/components/ProductList.tsx
-
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowRight, X } from 'react-feather';
 import './ProductList.css';
 
-// --- (Tus interfaces y datos de productos no necesitan cambios) ---
+// --- INTERFACES Y DATOS DE PRODUCTOS ---
 interface Product {
     id: number;
     name: string;
@@ -31,6 +30,91 @@ const productTypes = [...new Set(allProducts.map(p => p.type))];
 const brands = [...new Set(allProducts.map(p => p.brand))];
 const genders = [...new Set(allProducts.map(p => p.gender))];
 
+// --- COMPONENTE BANNER REPLICADO DE HomePage ---
+const ClubBanner = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [email, setEmail] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setTimeout(() => {
+      setIsSubmitted(false);
+      setEmail('');
+    }, 300);
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (email.trim() !== '' && email.includes('@')) {
+      setIsSubmitted(true);
+    } else {
+      alert('Por favor, introduce un correo electrónico válido.');
+    }
+  };
+
+  return (
+    <>
+      <section className="club-banner">
+        <div className="banner-content">
+          <span>ÚNETE AL CLUB Y OBTÉN UN 15% DE DESCUENTO</span>
+          <button onClick={handleOpenModal}>
+            REGÍSTRATE GRATIS <ArrowRight size={16} />
+          </button>
+        </div>
+      </section>
+
+      {isModalOpen && (
+        <div className="modal-backdrop" onClick={handleCloseModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close-btn" onClick={handleCloseModal}>
+              <X size={24} />
+            </button>
+            
+            {!isSubmitted ? (
+              <>
+                <div className="modal-header">
+                  <h3>INICIA SESIÓN O REGÍSTRATE.</h3>
+                  <p>Accede a diseños exclusivos, experiencias, ofertas... ¡Y mucho más!</p>
+                </div>
+                <form onSubmit={handleSubmit} className="modal-form">
+                  <div className="social-login-icons">
+                    <button type="button" aria-label="Login con Apple"></button>
+                    <button type="button" aria-label="Login con Facebook">f</button>
+                    <button type="button" aria-label="Login con Google">G</button>
+                  </div>
+                  <input
+                    type="email"
+                    placeholder="CORREO ELECTRÓNICO *"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                  <p className="privacy-notice">
+                    ¡Nunca te pierdas nada gracias a los anuncios personalizados en los medios digitales!
+                  </p>
+                  <button type="submit" className="submit-arrow-btn">
+                    <ArrowRight size={24} />
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div className="success-message">
+                <h3>¡Registro Exitoso!</h3>
+                <p>Tu cupón de descuento ha sido enviado a tu correo electrónico.</p>
+                <p><strong>{email}</strong></p>
+                <button onClick={handleCloseModal} className="btn-success-close">Cerrar</button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+// --- COMPONENTE ACORDEÓN PARA FILTROS ---
 interface AccordionItemProps {
   title: string;
   children: React.ReactNode;
@@ -47,6 +131,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ title, children, isOpen, 
   </div>
 );
 
+// --- COMPONENTE PRINCIPAL DE LA PÁGINA ---
 const ProductList: React.FC = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(allProducts);
   const [openAccordion, setOpenAccordion] = useState<string | null>('TIPO DE PRODUCTO');
@@ -78,24 +163,14 @@ const ProductList: React.FC = () => {
         className={`filters-overlay ${isFiltersOpen ? 'is-open' : ''}`}
         onClick={() => setIsFiltersOpen(false)}
       ></div>
+      
+      <ClubBanner />
 
-      {/* ================================================================ */}
-      {/* ===== INICIO DE LA SECCIÓN AÑADIDA PARA TÍTULO SEO (H1) ===== */}
-      {/* ================================================================ */}
-      <div className="page-header" style={{ width: '100%', textAlign: 'center', padding: '2rem 1rem' }}>
-        <h1>Ofertas en Zapatillas de Alto Rendimiento | D'JAVI ESPORT</h1>
-        <p style={{ fontSize: '1.1rem', color: '#666', maxWidth: '750px', margin: '1rem auto 0' }}>
-          Descubre nuestra selección exclusiva de calzado deportivo con descuentos increíbles. Calidad, tecnología y rendimiento al mejor precio garantizado.
-        </p>
-      </div>
-      {/* ================================================================ */}
-      {/* ===== FIN DE LA SECCIÓN AÑADIDA ===== */}
-      {/* ================================================================ */}
+      {/* El encabezado de texto duplicado ha sido eliminado para un diseño más limpio */}
 
       <div className="shop-container">
         <aside className={`filters-sidebar ${isFiltersOpen ? 'is-open' : ''}`}>
             <div className="filters-sidebar-header">
-              {/* Este es el H2 */}
               <h2 className="filters-title">OFERTAS</h2>
               <button className="close-filters-btn" onClick={() => setIsFiltersOpen(false)}>&times;</button>
             </div>
@@ -108,7 +183,6 @@ const ProductList: React.FC = () => {
             <AccordionItem title="GÉNERO" isOpen={openAccordion === 'GÉNERO'} onToggle={() => handleToggleAccordion('GÉNERO')}>
                 {genders.map(gender => (<label key={gender}><input type="checkbox" onChange={() => handleFilterChange(gender, 'gender')} /> {gender}</label>))}
             </AccordionItem>
-            {/* ... resto de filtros ... */}
         </aside>
 
         <main className="product-display">
@@ -130,7 +204,6 @@ const ProductList: React.FC = () => {
                   </div>
                   <div className="product-details">
                     <p className="product-category">{product.brand.toUpperCase()}</p>
-                    {/* Este es el H3 */}
                     <h3 className="product-name">{product.name}</h3>
                     <div className="product-price-container">
                       <span className="sale-price">S/ {product.price.toFixed(2)}</span>

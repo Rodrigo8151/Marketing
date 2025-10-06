@@ -1,4 +1,4 @@
-// src/components/Navbar.tsx (CORREGIDO)
+// src/components/Navbar.tsx
 
 import React, { useState, useEffect } from 'react';
 import { LuSearch, LuUser, LuShoppingBag } from 'react-icons/lu';
@@ -11,11 +11,11 @@ const Navbar: React.FC = () => {
   const location = useLocation();
 
   const navItems = [
-    { label: 'Nuevo', to: '/productos?categoria=nuevo' },
-    { label: 'Hombre', to: '/productos?genero=Hombre' },
-    { label: 'Mujer', to: '/productos?genero=Mujer' },
-    { label: 'Niños', to: '/productos?genero=Niños' },
-    { label: 'Marcas', to: '/marcas' },
+    { label: 'TIENDA', to: '/productos?categoria=nuevo' },
+
+    { label: 'Nosotros', to: '/nosotros' }, // <-- ENLACE AÑADIDO
+    { label: 'Blog', to: '/blog' }, // <-- AÑADIDO
+    { label: 'Testimonios', to: '/testimonios' }, // <-- AÑADIDO
     { label: 'Ofertas', to: '/productos', isSpecial: true },
   ];
 
@@ -38,11 +38,9 @@ const Navbar: React.FC = () => {
 
   return (
     <header className={navClasses}>
-      {/* --- ESTA ES LA LÍNEA CORREGIDA --- */}
       <div className="navbar-logo">
         <Link to="/">D'JAVI ESPORT</Link>
       </div>
-
       <nav className="navbar-navigation">
         <ul>
           {navItems.map(item => (
