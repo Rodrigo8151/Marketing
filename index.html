@@ -7,10 +7,16 @@
     <title>Vite + React + TS</title>
   </head>
   <body>
+    <!-- 
+      ===============================================================
+      ===> MUEVE EL FORMULARIO AQUÍ, DENTRO DEL BODY Y ANTES DE #root <===
+      ===============================================================
+    -->
+    <form name="lead-capture" netlify netlify-honeypot="bot-field" hidden>
+      <input type="email" name="email" />
+    </form>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
-    <form name="lead-capture" netlify netlify-honeypot="bot-field" hidden>
-    <input type="email" name="email" />
-  </form>
 </html>
