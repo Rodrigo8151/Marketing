@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import './Blog.css'; // -> CAMBIO AQUÍ
 
 const mockBlogPosts = [
-  { id: 'mejores-rutas-quillabamba', title: 'Las 5 Mejores Rutas para Correr en Quillabamba', excerpt: 'Descubre paisajes increíbles y desafía tus límites con nuestra selección de rutas locales...', imageUrl: '/blog1.jpg' },
   { id: 'cuidado-zapatillas-running', title: 'Guía Definitiva: Cómo Cuidar tus Zapatillas de Running', excerpt: 'Aprende los secretos para que tu calzado de alto rendimiento dure mucho más tiempo y se mantenga como nuevo.', imageUrl: '/blog3.jpg' },
   { id: 'elegir-zapatilla-perfecta', title: '¿No sabes qué zapatilla elegir? Te ayudamos', excerpt: 'Analizamos los tipos de pisada, terrenos y necesidades para que hagas la compra perfecta.', imageUrl: '/blog2.jpg' }
 ];

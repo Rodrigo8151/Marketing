@@ -12,7 +12,6 @@ const Navbar: React.FC = () => {
 
   const navItems = [
     { label: 'TIENDA', to: '/productos?categoria=nuevo' },
-
     { label: 'Nosotros', to: '/nosotros' }, // <-- ENLACE AÑADIDO
     { label: 'Blog', to: '/blog' }, // <-- AÑADIDO
     { label: 'Testimonios', to: '/testimonios' }, // <-- AÑADIDO
