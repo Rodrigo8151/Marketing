@@ -1,24 +1,53 @@
-import { useState } from 'react';
+import React, { useState } from 'react'; // Se importa React
 import { Link } from 'react-router-dom';
 import { FaInstagram, FaTiktok } from 'react-icons/fa';
 import { FaCcVisa, FaCcMastercard, FaCcAmex } from 'react-icons/fa';
 import './Footer.css'; 
 
+// --- FUNCIÓN AUXILIAR PARA NETLIFY ---
+const encode = (data: { [key: string]: string }) => {
+  return Object.keys(data)
+    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    .join("&");
+}
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
-  // --- LÓGICA PARA EL NEWSLETTER ---
+  // --- LÓGICA ACTUALIZADA PARA EL NEWSLETTER CON NETLIFY ---
   const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
 
-  const handleNewsletterSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Evita que la página se recargue
-    if (email.trim() === '') return; // No hacer nada si el email está vacío
+  const handleNewsletterSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (email.trim() === '') return;
     
-    // Aquí iría la lógica para enviar el email a tu servicio de marketing
-    console.log('Email suscrito:', email);
+    setIsSubmitting(true);
+    setSubmitMessage('');
 
-    setIsSubmitted(true); // Cambia el estado para mostrar el mensaje y deshabilitar
+    try {
+      // Enviamos el correo a Netlify en segundo plano
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({
+          "form-name": "newsletter-signup", // Nombre del formulario para Netlify
+          "email": email
+        })
+      });
+
+      // Si el envío fue exitoso, actualizamos el estado
+      setIsSubmitted(true);
+      setSubmitMessage("¡Gracias por suscribirte! Revisa tu bandeja de entrada.");
+
+    } catch (error) {
+      console.error("Error al suscribirse al newsletter:", error);
+      setSubmitMessage("Hubo un error. Por favor, inténtalo de nuevo más tarde.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -28,10 +57,8 @@ const Footer = () => {
         <div className="footer-column">
           <h4>NOSOTROS</h4>
           <ul>
-            {/* --- ENLACES FUNCIONALES --- */}
             <li><Link to="/nosotros">Nuestra Historia</Link></li>
             <li><Link to="/testimonios">Testimonios</Link></li>
-            {/* --- Enlaces de demostración --- */}
             <li><a href="/productos?categoria=nuevo">Tiendas</a></li>
             <li><a href="#">Trabaja con nosotros</a></li>
           </ul>
@@ -53,7 +80,6 @@ const Footer = () => {
         <div className="footer-column">
           <h4>ÚNETE</h4>
           <ul>
-            {/* --- ENLACES FUNCIONALES --- */}
             <li><Link to="/blog">Nuestro Blog</Link></li>
             <li><Link to="/club-vip">Club VIP WhatsApp</Link></li>
             <li><Link to="/guia-cuidado-zapatillas">Guía Gratuita</Link></li>
@@ -63,27 +89,38 @@ const Footer = () => {
         {/* --- COLUMNA 4: NEWSLETTER Y REDES --- */}
         <div className="footer-column">
           <h4>NEWSLETTER</h4>
-          {!isSubmitted ? (
-            <p>¡Suscríbete y recibe nuestras novedades!</p>
-          ) : null}
+          {!isSubmitted && <p>¡Suscríbete y recibe nuestras novedades!</p>}
           
-          <form className="newsletter-form" onSubmit={handleNewsletterSubmit}>
+          {/* Formulario adaptado para Netlify */}
+          <form 
+            name="newsletter-signup"
+            data-netlify="true"
+            data-netlify-honeypot="bot-field"
+            className="newsletter-form" 
+            onSubmit={handleNewsletterSubmit}
+          >
+            {/* Campos ocultos requeridos por Netlify */}
+            <input type="hidden" name="form-name" value="newsletter-signup" />
+            <p hidden><label>No llenar: <input name="bot-field" /></label></p>
+            
             <input 
               type="email" 
+              name="email" // Atributo 'name' es crucial
               placeholder="Ingresa tu e-mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              disabled={isSubmitted}
+              disabled={isSubmitted || isSubmitting} // Deshabilitado al enviar y al tener éxito
               required 
             />
-            <button type="submit" disabled={isSubmitted}>
-              {isSubmitted ? 'SUSCRITO' : 'SUSCRIBIRME'}
+            <button type="submit" disabled={isSubmitted || isSubmitting}>
+              {isSubmitting ? 'ENVIANDO...' : (isSubmitted ? 'SUSCRITO' : 'SUSCRIBIRME')}
             </button>
           </form>
 
-          {isSubmitted && (
-            <p className="newsletter-success">
-              ¡Gracias por suscribirte! Revisa tu bandeja de entrada.
+          {/* Mensajes de éxito o error */}
+          {submitMessage && (
+            <p className={isSubmitted ? "newsletter-success" : "newsletter-error"}>
+              {submitMessage}
             </p>
           )}
 

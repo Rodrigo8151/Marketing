@@ -1,31 +1,63 @@
-// src/components/Inicio/HomePage.tsx
-
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react'; // Se importa React
 import { Link } from 'react-router-dom';
 import './HomePage.css';
 import { ArrowLeft, ArrowRight, X } from 'react-feather';
 
-// --- SECCIÓN DEL BANNER Y MODAL DEL CLUB (ACTUALIZADA) ---
+// --- FUNCIÓN AUXILIAR PARA NETLIFY (puede estar fuera del componente) ---
+const encode = (data: { [key: string]: string }) => {
+  return Object.keys(data)
+    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    .join("&");
+}
+
+// --- SECCIÓN DEL BANNER Y MODAL DEL CLUB (ACTUALIZADA CON LÓGICA DE NETLIFY) ---
 const ClubBanner = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState('');
+  
+  // Nuevos estados para manejar el envío del formulario
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
 
   const handleOpenModal = () => setIsModalOpen(true);
+  
   const handleCloseModal = () => {
     setIsModalOpen(false);
+    // Retrasamos el reseteo para que no se vea el cambio durante la animación de cierre
     setTimeout(() => {
       setIsSubmitted(false);
+      setIsSubmitting(false);
+      setSubmitMessage('');
       setEmail('');
     }, 300);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // Lógica de envío a Netlify
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email.trim() !== '' && email.includes('@')) {
+    setIsSubmitting(true);
+    setSubmitMessage('');
+
+    try {
+      // Enviamos los datos en segundo plano a Netlify
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({
+          "form-name": "club-signup", // Este nombre DEBE coincidir con el del <form>
+          "email": email
+        })
+      });
+
+      // Si el envío es exitoso, mostramos la pantalla de éxito
       setIsSubmitted(true);
-    } else {
-      alert('Por favor, introduce un correo electrónico válido.');
+
+    } catch (error) {
+      console.error("Error al enviar el formulario a Netlify:", error);
+      setSubmitMessage("Hubo un error al registrarte. Por favor, inténtalo de nuevo.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -33,7 +65,6 @@ const ClubBanner = () => {
     <>
       <section className="club-banner">
         <div className="banner-content">
-          {/* TEXTO ACTUALIZADO */}
           <span>ÚNETE AL CLUB Y OBTÉN UN 15% DE DESCUENTO</span>
           <button onClick={handleOpenModal}>
             REGÍSTRATE GRATIS <ArrowRight size={16} />
@@ -51,11 +82,27 @@ const ClubBanner = () => {
             {!isSubmitted ? (
               <>
                 <div className="modal-header">
-                  {/* LOGO ELIMINADO */}
                   <h3>INICIA SESIÓN O REGÍSTRATE.</h3>
                   <p>Accede a diseños exclusivos, experiencias, ofertas... ¡Y mucho más!</p>
                 </div>
-                <form onSubmit={handleSubmit} className="modal-form">
+                {/* 
+                  FORMULARIO ADAPTADO PARA NETLIFY:
+                  1. 'name' del formulario.
+                  2. 'data-netlify="true"' y 'data-netlify-honeypot'.
+                  3. Campos ocultos necesarios para Netlify.
+                  4. Atributo 'name' en el input de email.
+                */}
+                <form 
+                  name="club-signup" 
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
+                  onSubmit={handleSubmit} 
+                  className="modal-form"
+                >
+                  {/* Campos ocultos para Netlify */}
+                  <input type="hidden" name="form-name" value="club-signup" />
+                  <p hidden><label>No llenar: <input name="bot-field" /></label></p>
+
                   <div className="social-login-icons">
                     <button type="button" aria-label="Login con Apple"></button>
                     <button type="button" aria-label="Login con Facebook">f</button>
@@ -63,17 +110,21 @@ const ClubBanner = () => {
                   </div>
                   <input
                     type="email"
+                    name="email" // <-- ATRIBUTO 'name' AÑADIDO (CRUCIAL)
                     placeholder="CORREO ELECTRÓNICO *"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    disabled={isSubmitting} // Deshabilitado mientras se envía
                   />
                   <p className="privacy-notice">
                     ¡Nunca te pierdas nada gracias a los anuncios personalizados en los medios digitales!
                   </p>
-                  <button type="submit" className="submit-arrow-btn">
-                    <ArrowRight size={24} />
+                  <button type="submit" className="submit-arrow-btn" disabled={isSubmitting}>
+                    {isSubmitting ? "..." : <ArrowRight size={24} />}
                   </button>
+                  {/* Mensaje de error si lo hubiera */}
+                  {submitMessage && <p className="error-message">{submitMessage}</p>}
                 </form>
               </>
             ) : (
@@ -91,7 +142,7 @@ const ClubBanner = () => {
   );
 };
 
-// --- SECCIONES QUE PERMANECEN EN LA PÁGINA DE INICIO ---
+// --- SECCIONES QUE PERMANECEN EN LA PÁGINA DE INICIO (SIN CAMBIOS) ---
 
 // SECCIÓN 1: HERO
 const heroProductsData = [
@@ -153,16 +204,10 @@ const HomePage = () => {
   return (
     <>
       <Hero />
-
-      {/* 
-        NUEVO CONTENEDOR QUE ENVUELVE EL BANNER Y EL CARRUSEL.
-        Este es el cambio clave. Ahora son una sola sección.
-      */}
       <div className="banner-about-wrapper">
         <ClubBanner />
         <About />
       </div>
-      
       <Portfolio />
     </>
   );

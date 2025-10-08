@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, X } from 'react-feather';
 import './ProductList.css';
 
-// --- INTERFACES Y DATOS DE PRODUCTOS ---
+// --- INTERFACES Y DATOS DE PRODUCTOS (SIN CAMBIOS) ---
 interface Product {
     id: number;
     name: string;
@@ -30,27 +30,56 @@ const productTypes = [...new Set(allProducts.map(p => p.type))];
 const brands = [...new Set(allProducts.map(p => p.brand))];
 const genders = [...new Set(allProducts.map(p => p.gender))];
 
-// --- COMPONENTE BANNER REPLICADO DE HomePage ---
+// --- FUNCIÓN AUXILIAR PARA NETLIFY ---
+const encode = (data: { [key: string]: string }) => {
+  return Object.keys(data)
+    .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    .join("&");
+}
+
+// --- COMPONENTE BANNER ACTUALIZADO CON LÓGICA DE NETLIFY ---
 const ClubBanner = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState('');
+  
+  // Estados para manejar el envío del formulario
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState('');
 
   const handleOpenModal = () => setIsModalOpen(true);
+  
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setTimeout(() => {
       setIsSubmitted(false);
+      setIsSubmitting(false);
+      setSubmitMessage('');
       setEmail('');
     }, 300);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // Lógica de envío a Netlify
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email.trim() !== '' && email.includes('@')) {
+    setIsSubmitting(true);
+    setSubmitMessage('');
+
+    try {
+      await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({
+          "form-name": "club-signup", // Mismo nombre que en HomePage para agrupar envíos
+          "email": email
+        })
+      });
       setIsSubmitted(true);
-    } else {
-      alert('Por favor, introduce un correo electrónico válido.');
+    } catch (error) {
+      console.error("Error al enviar el formulario a Netlify:", error);
+      setSubmitMessage("Hubo un error al registrarte. Por favor, inténtalo de nuevo.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -78,7 +107,15 @@ const ClubBanner = () => {
                   <h3>INICIA SESIÓN O REGÍSTRATE.</h3>
                   <p>Accede a diseños exclusivos, experiencias, ofertas... ¡Y mucho más!</p>
                 </div>
-                <form onSubmit={handleSubmit} className="modal-form">
+                <form 
+                  name="club-signup" 
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
+                  onSubmit={handleSubmit} 
+                  className="modal-form"
+                >
+                  <input type="hidden" name="form-name" value="club-signup" />
+                  <p hidden><label>No llenar: <input name="bot-field" /></label></p>
                   <div className="social-login-icons">
                     <button type="button" aria-label="Login con Apple"></button>
                     <button type="button" aria-label="Login con Facebook">f</button>
@@ -86,17 +123,20 @@ const ClubBanner = () => {
                   </div>
                   <input
                     type="email"
+                    name="email" // Atributo name es crucial
                     placeholder="CORREO ELECTRÓNICO *"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    disabled={isSubmitting}
                   />
                   <p className="privacy-notice">
                     ¡Nunca te pierdas nada gracias a los anuncios personalizados en los medios digitales!
                   </p>
-                  <button type="submit" className="submit-arrow-btn">
-                    <ArrowRight size={24} />
+                  <button type="submit" className="submit-arrow-btn" disabled={isSubmitting}>
+                    {isSubmitting ? "..." : <ArrowRight size={24} />}
                   </button>
+                  {submitMessage && <p className="error-message">{submitMessage}</p>}
                 </form>
               </>
             ) : (
@@ -114,7 +154,7 @@ const ClubBanner = () => {
   );
 };
 
-// --- COMPONENTE ACORDEÓN PARA FILTROS ---
+// --- COMPONENTE ACORDEÓN PARA FILTROS (SIN CAMBIOS) ---
 interface AccordionItemProps {
   title: string;
   children: React.ReactNode;
@@ -131,7 +171,7 @@ const AccordionItem: React.FC<AccordionItemProps> = ({ title, children, isOpen, 
   </div>
 );
 
-// --- COMPONENTE PRINCIPAL DE LA PÁGINA ---
+// --- COMPONENTE PRINCIPAL DE LA PÁGINA (SIN CAMBIOS) ---
 const ProductList: React.FC = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>(allProducts);
   const [openAccordion, setOpenAccordion] = useState<string | null>('TIPO DE PRODUCTO');
@@ -165,8 +205,6 @@ const ProductList: React.FC = () => {
       ></div>
       
       <ClubBanner />
-
-      {/* El encabezado de texto duplicado ha sido eliminado para un diseño más limpio */}
 
       <div className="shop-container">
         <aside className={`filters-sidebar ${isFiltersOpen ? 'is-open' : ''}`}>
