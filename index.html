@@ -9,12 +9,29 @@
   <body>
     <!-- 
       ===============================================================
-      ===> MUEVE EL FORMULARIO AQUÍ, DENTRO DEL BODY Y ANTES DE #root <===
+      ===> DECLARACIÓN DE TODOS LOS FORMULARIOS PARA NETLIFY <===
       ===============================================================
     -->
+    
+    <!-- Formulario 1: Ya lo tenías (he añadido el campo bot-field para consistencia) -->
     <form name="lead-capture" netlify netlify-honeypot="bot-field" hidden>
       <input type="email" name="email" />
+      <input name="bot-field" />
     </form>
+
+    <!-- Formulario 2: Para el modal de registro al club (AÑADIR ESTE) -->
+    <form name="club-signup" netlify netlify-honeypot="bot-field" hidden>
+      <input type="email" name="email" />
+      <input name="bot-field" />
+    </form>
+
+    <!-- Formulario 3: Para el newsletter del footer (AÑADIR ESTE) -->
+    <form name="newsletter-signup" netlify netlify-honeypot="bot-field" hidden>
+      <input type="email" name="email" />
+      <input name="bot-field" />
+    </form>
+
+    <!-- =============================================================== -->
 
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
