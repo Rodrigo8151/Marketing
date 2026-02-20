@@ -18,7 +18,7 @@ Funcionalidades
 
 Demo del proyecto
 
-Enlace al sitio: [pega aquí tu link de Netlify]
+Enlace al sitio: https://djaviesport.netlify.app/
 
 Estado del proyecto
 
